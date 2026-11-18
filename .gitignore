@@ -1,0 +1,7 @@
+preview-*.html
+.DS_Store
+__pycache__/
+PRODUCT.md
+DESIGN.md
+.impeccable/
+scripts/fonts/*.ttf
