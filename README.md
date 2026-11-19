@@ -13,20 +13,21 @@ I'm Paul, an M.S. Data Science student at UC San Diego. I like data that arrives
 
 ## Production lines
 
-<a href="https://github.com/Paul-Lai0111/semiconductor-yield-anomaly-detection"><img src="assets/monitors/yield.svg" width="100%" alt="Semiconductor Yield: which wafer runs to inspect first when only 20% can be reviewed; 5 of 17 later failures caught with 62 reviews."></a>
+<a href="https://github.com/Paul-Lai0111/semiconductor-yield-anomaly-detection"><img src="assets/monitors/yield.svg" width="100%" alt="Semiconductor Yield: which units to inspect when only 20% of a batch can be reviewed; the supervised ranking catches 5 failures to MSPC's 2."></a>
 
 <details>
-<summary><b>Open the line:</b> Semiconductor Yield · results, method, repo</summary>
+<summary><b>Open the line:</b> Semiconductor Yield · live monitor, findings, repo</summary>
 <br>
 
-<img src="https://raw.githubusercontent.com/Paul-Lai0111/semiconductor-yield-anomaly-detection/main/manufacturing_results/figures/outcome_summary.png" width="100%" alt="Same-budget outcomes for the selected method, previous recipe and random review">
+<img src="https://raw.githubusercontent.com/Paul-Lai0111/semiconductor-yield-anomaly-detection/main/fab_monitoring_results/figures/mspc_vs_ml.png" width="100%" alt="Industry-standard MSPC versus supervised ranking on the frozen later block">
 
-- **Data:** UCI SECOM, 1,567 production runs × 590 anonymized sensors, 104 failures (6.6%). Predicting "pass" everywhere scores 93% accuracy and catches nothing, so every method is judged by failures caught per review.
-- **Search:** 50 fixed configurations (forests, boosting, SVMs, linear, nearest neighbors, novelty detectors) over three expanding forward blocks, 150 fits, plus one predeclared rank blend.
-- **Discipline:** the protocol and source hashes were saved before the search, and the recipe was frozen before the latest 20% of runs were scored.
-- **Result:** 5 of 17 later failures with 62 reviews, the same as the previous recipe. Reported as it came out, not as the best of many tries.
+- **Data:** UCI SECOM, 1,567 units × 590 anonymized sensors, 104 failures. Predicting "pass" everywhere scores 93% accuracy and catches nothing, so every method is judged by failures caught at a fixed inspection budget.
+- **Frozen search:** 50 detector configurations on three forward blocks, with the protocol, catalog and source hashes saved before the search and the winner frozen before the later block was scored. A from-scratch re-run reproduced every decision.
+- **Against current practice:** the supervised ranking beats MSPC (PCA with Hotelling T² and SPE) at every budget, 5 vs 2 failures at 20% and 10 vs 3 at 50%; textbook 99% MSPC limits alarm on 72% of later passing units. MSPC stays as the diagnostic view, with contribution plots and an alarm Pareto.
+- **Drift and retraining:** 58–82% of sensors drift in every 100-unit batch (noise floor ≤ 7.5%). In a label-delayed replay, retraining lifts catches from 10 to 14–15 of 46, a direction the report states is not yet significant (p ≥ 0.45).
+- **Shipped:** a FastAPI batch-scoring service, a Docker image and a Streamlit monitor with a wafer bin map, control charts, drift, a budget slider and a stability-tiered sensor watchlist.
 
-[Repository](https://github.com/Paul-Lai0111/semiconductor-yield-anomaly-detection) · [Executed notebook](https://github.com/Paul-Lai0111/semiconductor-yield-anomaly-detection/blob/main/manufacturing_notebook.ipynb) · [Full results](https://github.com/Paul-Lai0111/semiconductor-yield-anomaly-detection/blob/main/manufacturing_results/RESULTS.md)
+[Live monitor](https://semiconductor-yield-anomaly-detection-paullai.streamlit.app/) · [Repository](https://github.com/Paul-Lai0111/semiconductor-yield-anomaly-detection) · [Engineering report](https://github.com/Paul-Lai0111/semiconductor-yield-anomaly-detection/blob/main/docs/16_engineering_report.md) · [Fab-monitoring results](https://github.com/Paul-Lai0111/semiconductor-yield-anomaly-detection/blob/main/fab_monitoring_results/RESULTS.md)
 </details>
 
 <a href="https://github.com/Paul-Lai0111/ocean-soundscape-ml"><img src="assets/monitors/ocean.svg" width="100%" alt="Ocean Soundscape: a year of deep-ocean audio sorted without labels; monthly agreement r = 0.99 with MBARI's fin whale index."></a>
@@ -84,7 +85,7 @@ I'm Paul, an M.S. Data Science student at UC San Diego. I like data that arrives
 
 - A plain ping can't wake a sleeping Streamlit app, because the sleep page loads fine; only pressing the button in a browser does.
 - So a scheduled workflow opens each app in headless Chromium with Playwright, presses the button if it's there and waits for the app to render. If an app doesn't come back within 4 minutes, the run fails and GitHub emails you.
-- Use it as a template repository or as a one-step composite action. MIT licensed. It keeps the two live demos above awake.
+- Use it as a template repository or as a one-step composite action. MIT licensed. It keeps the three live demos above awake.
 
 [Repository](https://github.com/Paul-Lai0111/streamlit-wake)
 </details>
@@ -101,10 +102,12 @@ I'm Paul, an M.S. Data Science student at UC San Diego. I like data that arrives
 |---|---|---|
 | Python, pandas, NumPy | ingest, cleaning, time ordering, feature tables | all |
 | scikit-learn | preprocessing, PCA, clustering, model search, validation | Yield · Ocean · Ceramics |
+| MSPC, PSI / KS drift tests | Hotelling T² and SPE control limits, per-sensor contributions, drift monitoring | Yield |
 | XGBoost, LightGBM | gradient boosting for failure ranking and Stuff+ | Yield · DeepPitch |
 | SciPy, soundfile | calibrated spectra and acoustic features from raw audio | Ocean |
 | Parquet (pyarrow), AWS S3 | columnar storage, streaming from public archives | DeepPitch · Ocean |
-| Streamlit, Plotly, matplotlib | live dashboards and figures | Ocean · DeepPitch · Ceramics |
+| FastAPI, Docker | batch-scoring API with input validation, containerized service | Yield |
+| Streamlit, Plotly, matplotlib | live dashboards and figures | Yield · Ocean · DeepPitch · Ceramics |
 | pytest, GitHub Actions, Playwright | tests, CI, scheduled browser automation | Yield · DeepPitch · Wake |
 
 <p align="center"><sub>All artwork is drawn in code (<a href="scripts">scripts/</a>), lettered in Barlow under the SIL Open Font License.</sub></p>

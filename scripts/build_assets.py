@@ -204,7 +204,7 @@ def plant() -> str:
         doc.add(f'<circle cx="{lx + 18 + k * 16}" cy="{ly + 15}" r="4.5" fill="{c}" opacity=".85"/>')
     doc.add(COND_MED.text(doc, "plant.log", lx + lw / 2, ly + 20, 14, MUTED, anchor="middle", track=0.6))
     logs = [
-        ("yield", CYAN, "590 sensors  ·  50 models  ·  recipe frozen"),
+        ("yield", CYAN, "590 sensors  ·  beats MSPC 5 vs 2  ·  drift watched"),
         ("ocean", BLUE, "4 GB/day streamed  ·  r 0.99 vs MBARI"),
         ("pitch", RED, "2.14M rows to 17 MB  ·  Stuff+ out-of-sample"),
         ("sherd", CLAY, "257 samples  ·  silhouette 0.64"),
@@ -329,7 +329,7 @@ def screen(doc, title: str, live: bool):
 
 
 def viz_wafer(doc):
-    screen(doc, "WAFER MAP  ·  REVIEW ORDER", False)
+    screen(doc, "WAFER BIN MAP  ·  INSPECTION QUEUE", True)
     cx, cy, r = 172, 154, 90
     rnd = random.Random(31)
     step = 12
@@ -427,8 +427,8 @@ def viz_wake(doc):
 
 MONITORS = [
     dict(slug="yield", viz=viz_wafer, accent=CYAN, title="Semiconductor Yield",
-         summary="Which wafer runs should engineers inspect first when only 20% of a batch can be reviewed? 50 model configurations, validated forward in time.",
-         metric="5 / 17", metric_label="later failures caught with 62 reviews", chips=["pandas", "scikit-learn", "XGBoost", "pytest", "CI"]),
+         summary="Which units should a fab inspect when only 20% of a batch can be reviewed? A frozen model search, the MSPC baseline fabs run today, drift and retraining, shipped as an API and a live monitor.",
+         metric="5 vs 2", metric_label="failures caught vs MSPC at a 20% budget", chips=["scikit-learn", "MSPC", "FastAPI", "Docker", "Streamlit"]),
     dict(slug="ocean", viz=viz_spectrogram, accent=BLUE, title="Ocean Soundscape",
          summary="A year of deep-ocean audio sorted without labels into whale song, wind, ships and one earthquake, each checked against outside data.",
          metric="r 0.99", metric_label="monthly agreement with MBARI's fin whale index", chips=["SciPy", "scikit-learn", "soundfile", "S3", "Streamlit"]),
