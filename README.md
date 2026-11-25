@@ -59,7 +59,7 @@ I'm Paul, an M.S. Data Science student at UC San Diego. I like data that arrives
 - **Finding:** across 1,082 pitcher-season four-seamers, vertical approach angle relates to whiffs (r = +0.47) while "rise" barely does (r = −0.02).
 - **App:** eight pages in English and Traditional Chinese, from flight replay to a physics lab.
 
-[Live app](https://paul-2024mlb-deeppitch-analytics.streamlit.app/) · [Repository](https://github.com/Paul-Lai0111/MLB_DeepPitch_Dashboard)
+[Live app](https://paul-mlb-deeppitch-analytics.streamlit.app/) · [Repository](https://github.com/Paul-Lai0111/MLB_DeepPitch_Dashboard)
 </details>
 
 <a href="https://github.com/Paul-Lai0111/sinica-ceramic-clustering"><img src="assets/monitors/ceramics.svg" width="100%" alt="Archaeological Ceramics: 257 pottery sherds grouped by mineral composition; silhouette rose from 0.50 to 0.64."></a>
